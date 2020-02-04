@@ -28,11 +28,20 @@
         <p>
             <h3>Long Polling</h3>
             We request the server and server will keep open the connection until respond to the request, If there is no response within certain timeframe the request will timeout. If timeout happen browser will start requesting again with new request.
+            <img src="Images/LongPolling.JPG" />
+            <b>Server Side Code</b>
+            <img src="Images/LongPollingServer_Example.JPG" />
+            <b>Client Side Code</b>
+            <img src="Images/LongPollingClient_Example.JPG" />
         </p>
-        <img src="Images/LongPolling.JPG" />
-        <b>Server Side Code</b>
-        <img src="Images/LongPollingServer_Example.JPG" />
-        <b>Client Side Code</b>
-        <img src="Images/LongPollingClient_Example.JPG" />
-
+        <p>
+            <h3>Server Sent Events</h3>
+            It is consider html5 feature.
+            Server create http connection to the browser with Server Sent Event. Broswer will listen to the incomming message as stream and connection will remain open untile it actively close.
+            <img src="Images/PolliServer_Sent_Eventng.JPG" /><br>
+            Server Side Code looks like below
+            <img src="Images/Server_Sent_Event_Server_Code.JPG" /><br>
+            Client side code looks like below
+            <img src="Images/Server_Sent_Event_Client_Code.JPG" /><br>
+        </p>
 </div>
