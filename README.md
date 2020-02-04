@@ -29,8 +29,8 @@
             <h3>Long Polling</h3>
             We request the server and server will keep open the connection until respond to the request, If there is no response within certain timeframe the request will timeout. If timeout happen browser will start requesting again with new request.
         </p>
-        <img src="./images/LongPolling.JPG" />
-        <img src="./images/LongPollingServer_Example.JPG" />
-        <img src="./images/LongPollingClient_Example.JPG" />
+        <img src="Images/LongPolling.JPG" />
+        <img src="Images/LongPollingServer_Example.JPG" />
+        <img src="Images/LongPollingClient_Example.JPG" />
 
 </div>
