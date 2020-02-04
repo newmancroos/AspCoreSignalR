@@ -38,7 +38,7 @@
             <h3>Server Sent Events</h3>
             It is consider html5 feature.
             Server create http connection to the browser with Server Sent Event. Broswer will listen to the incomming message as stream and connection will remain open untile it actively close.
-            <img src="Images/PolliServer_Sent_Eventng.JPG" /><br>
+            <img src="Images/Server_Sent_Event.JPG" /><br>
             Server Side Code looks like below
             <img src="Images/Server_Sent_Event_Server_Code.JPG" /><br>
             Client side code looks like below
