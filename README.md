@@ -11,7 +11,7 @@
         <p>
             <h3>Polling:</h3>
             In polling there will be multiple call to the server untile we get the result.
-                    <img src="./images/Polling.JPG" />
+                    <img src="Images/Polling.JPG" />
             <pre>
                 function doPoll(){
                     fetch('http://Sample/getresult', 
@@ -30,7 +30,9 @@
             We request the server and server will keep open the connection until respond to the request, If there is no response within certain timeframe the request will timeout. If timeout happen browser will start requesting again with new request.
         </p>
         <img src="Images/LongPolling.JPG" />
+        <b>Server Side Code</b>
         <img src="Images/LongPollingServer_Example.JPG" />
+        <b>Client Side Code</b>
         <img src="Images/LongPollingClient_Example.JPG" />
 
 </div>
