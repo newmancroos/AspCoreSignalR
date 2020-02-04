@@ -43,5 +43,24 @@
             <img src="Images/Server_Sent_Event_Server_Code.JPG" /><br>
             Client side code looks like below
             <img src="Images/Server_Sent_Event_Client_Code.JPG" /><br>
+            we can can upto 6 open connections to a browser. It support text and binary messages.
+        </p>
+        <p>
+            <h3>Web Sockets</h3>
+            A standardized way to use one TCP socket through which messages can be sent from server to client and vice versa. TCP connection will be opne as long as the stream of message are done. SignalR uses Web socket most of the time when upto the browser. It supports Full duplex messaging and allowed 50 connections to a browser.
+            It support many different data type (text, Binary, Audio, Video).
+            <img src="Images/Lifetime_Websocket.JPG" />
+            <br>
+            <u>Web Sockets Handshake</u><br>
+             <ol>
+                <li>Browser makes get http call to server to request an upgrate to http socket</li>
+                <li>If server accept this socket become web socket and ready to sent messages.
+                Request : <img src="Images/WebSocket_HandshakRequest.JPG" />
+                Response:<img src="Images/WebSocket_HandshakServerResponset.JPG" />
+                </li>
+             </ol>
+        </p>
+        <p>
+            <h3><b>SignalR</b></h3>
         </p>
 </div>
