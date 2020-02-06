@@ -62,6 +62,47 @@
         </p>
         <p>
             <h3><b>SignalR</b></h3>
-            Test Text
+            Help to develop responsive web application. 
+            It consists of two part
+            <ol>
+            <li>Server Side</li>
+            <li>Client Side</li>
+            </ol>
+            <b>Transports</b><br>
+            Except Polling signalR support all other transpots <strong>WebSockets, Server Sent Event and Long Polling</strong>. SignalR uses transporter according to the browser which support the transport. SignaR prefer Websocket if browser doesn't support then it choose Server sent Event, ....
+            <img src="Images/SignalR_Transporters.JPG" />
+            Once connection setablished SignalR keep sending Keep alive message to test the connection if the connection lost it will throw an exception.
+            <br>
+            <strong>Remote Procedure Call (RPC)</strong>
+            Broswer and server can call remote method. Server calls method on the browser to sent the response as well as client also call server method to send request to the server using RPC.
+            <br>
+            <strong>Hubs</strong>
+            A Hub is a server-side class that send message to and receives messages from Clients by utilizing RPC. 
+            From a hub we can call a function from all client or a particular client or from a group of clients, the client also can call a method from the hub. Message will be transfer to the server and to the client in JSON (uses 38 bites) format or MessagePack (Binary)(uses 30 bites) format. MessagePack is light weighted and faster to transfer messages.
+            There are some changes between classic Asp.Net and Asp.net core signalR.
+            <ul>
+            <li>Simplified Connection model</li>
+            <li>Single hub per sonnection (Classic Asp.net has multiple hub per connection</li>
+            <li>All Hub methods are Async now</li>
+            <li>Binary and custom protocols</li>
+            <li>In Classic Asp.Net javascript client depends on JQuery client script written in type script.</li>
+            </ul>
+            <br>
+            <b>Scaling Out</b>
+            <img src="Images/Scaling-Out.JPG">
+            Scaling out means running the application on multiple server  here Load Balancer picks the server. If it is web socket then there in no problem using load balancer because Websocket creates a tunnel between client and server but the problem with Non-Websocket transport. To overcome frm this SignalR uses Stricky session.
+            <strong>Sticky session</strong> work as follows
+            When the first request comes in the load balancer set a cookie in the browser indicates that server that was used and subsequest request the load balancer redirect the request to the same server
+            <img src="Images/Sticky-Session-Scaling-Out.JPG">
+            The IIS and Azure web app version of sticky session called <b>Application Request Routing affinity.</b> <br>
+            <b>Azure SignalR Service Recipe</b>
+            In server version of signalR host has limited connection and some other limitation. So we can use Azure SignalR Service. Steps are as follows,
+            <ol>
+            <li>Create ASP.Net Core SignalR app</li>
+            <li>Create SignalR service in Azure portal</li>
+            <li>Get Connection string</li>
+            <li>Use this connection string to your app connect to the service</li>
+            </ol>
+            <img src="Images/Azure-SignalR-Service.JPG">
         </p>
 </div>
