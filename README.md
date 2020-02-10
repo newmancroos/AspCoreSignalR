@@ -104,5 +104,29 @@
             <li>Use this connection string to your app connect to the service</li>
             </ol>
             <img src="Images/Azure-SignalR-Service.JPG">
+            <p>
+                <ul>
+                    <li>Create a web api project and install aspnetcore.signalr packages</li>
+                    <li>Create a Hub class (messageHub) and inherit Hub</li>
+                    <li>To setup package.json by running npm init -y</li>
+                    <li>Install signalR client package by npm install @aspnet/signalr</li>
+                    <li>Copy signalr.js file from node_modules to wwwroot folder</li>
+                </ul>
+                In the startup.cs file in Configure Services
+                <pre>
+                    services.AddSignalR();
+                </pre>
+                and in Comfigure
+                <pre>
+                    app.UseEndPoints(endpoints =&gt;
+                    {
+                        endpoints.MapHub&lt;MessageHub&gt;("/messages");
+                    })
+                </pre>
+                <img src="Images/Index_Html.JPG">
+                <img src="Images/Message_Hub_cs.JPG">
+                <img src="Images/Message_js.JPG">
+            </p>
         </p>
+
 </div>
