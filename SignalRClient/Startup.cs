@@ -42,6 +42,8 @@ namespace SignalRClient
             services.AddControllers();
             services.AddRazorPages();
 
+            //Regular config without Redis and Azure
+            //services.AddSignalR();
 
             ////For Redis signaR 
             //services.AddSignalR().AddRedis(options =>
