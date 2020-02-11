@@ -127,6 +127,93 @@
                 <img src="Images/Message_Hub_cs.JPG">
                 <img src="Images/Message_js.JPG">
             </p>
+            <p><h3>Scaling SignalR</h3>
+                We can Scale out Signalr using 
+                <ul>
+                    <li>Redis</li>
+                    <li>Azure SignalR Service</li>
+                </ul>
+                When we use multiple servers using Load balancer then signalr will be the problen to maintain connected clients.
+                <img src="Images/LoadBalancer.JPG">
+                <strong><u>Using Redis</u></strong>
+                We can use redis to store user state when we use SignalR. Here we use Redis Docker image.
+                <ol>
+                    <li>docker pull redis</li>
+                    <li>docker run --name signalr -d -p 6379:6379 redis</li>
+                    <li>docker ps  --  will display if the redis running or not.</li>
+                    <li>Get the latest nueget package for Microsoft.AspNetCore.SignalR.Redis</li>
+                    <li>On startup.cs, configuer signalR with Redis
+                        <ul>
+                            <li>
+                                <pre>
+                                    services.AddSignalR().AddRedis(options =&gt;
+                                    {
+                                        options.Configuration.ClientName = "SignalR";
+                                    });
+                                </pre>
+                                Since our Redis container is running, if runn our application and send message that will bestore in redis.
+                            </li>
+                        </ul>
+                        when we use Load Balancer like <b>AWS - Elastic Load balancer  we need to enable Sticky session</b> or if we use <b> Azure Load balancer,  setup Source Ip Affinity Mode</b>
+                    </li>
+                </ol>
+                Using Azure SignalR service
+                <ol>
+                    <li>
+                        In Azure portal Create a new resource for Azure SignalR service (Create Resource andSearch fr SignalR services)
+                    </li>
+                    <li>
+                        Select Pricing Tier as Standard so that we can choose Unit count(SignalR connections)
+                    </li>
+                    <li>
+                        Create a entry in project file to point to the connection string if the azure signalr. Just place a random GUID in the project file  like below,
+                        <pre>
+                            &lt;PropertyGroup&gt;
+                                &lt;TargetFramework&gt;netcoreapp3.0&lt;/TargetFramework&gt;
+                                &lt;UserSecretsId&gt;A1E695C8-F57A-49C6-8D76-BDD9F01B6F37&lt;/UserSecretsId&gt;
+                            &lt;/PropertyGroup&gt;
+                        </pre>
+                    </li>
+                    <li>
+                        Now use Secret manager tool to store Azure SignalR connection string as local environment variable out side the project bountry.
+                        From the command line of the projection path execute ht efollowing command
+                        <pre>
+                            dotnet user-secrets set Azure:SignalR:ConnectionString "Endpoint=https://signalrlearn.service.signalr.net;AccessKey=/KGSSVkNqAvubp1woLdxm5owADpdoXWgKNaHKMIo1Zs=;Version=1.0;"
+                        </pre>
+                        where the connection string is from azure signalr resource connection string.
+                        Now the connection string is loaded to Secret manager tool and connected to the GUID we specified in the project file under UserSecretId.
+                        Help on Secret Manager tool : <a href=https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-3.1&tabs=windows>Secret manager Tool Documentation</a>
+                    </li>
+                    <li>
+                        Install the Nuget package <b> Microsoft.Azure.SignalR </b>
+                    </li>
+                    <li>
+                        Now modify Program.cs to configure the usersecret that tell http pipeline to load user secret as per the configuration in the Startup.cd
+                        <pre>
+                                public static IHostBuilder CreateHostBuilder(string[] args) =&gt;
+                                Host.CreateDefaultBuilder(args)
+                                .ConfigureAppConfiguration((context, config) =&gt; {
+                                    config.AddUserSecrets&lt;Startup&gt;();  //This will load the user screte added in startup
+                                    })
+                                    .ConfigureWebHostDefaults(webBuilder =&gt;
+                                    {
+                                        webBuilder.UseStartup&lt;Startup&gt;();
+                                    });
+                        </pre>
+                    </li>
+                    <li>
+                        In startup.cs ConfigureServices method:
+                             //For Azure SignalR
+                            services.AddSignalR().AddAzureSignalR(); <br>
+                        in Configure method :
+                        <pre>
+                            app.UseAzureSignalR(config =&gt; {
+                                config.MapHub&lt;MessageHub&gt;("/messages");
+                            });
+                        </pre>
+                    </li>
+                </ol>
+            </p>
         </p>
 
 </div>

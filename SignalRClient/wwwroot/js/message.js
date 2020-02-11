@@ -4,6 +4,15 @@ var connection = new signalR.HubConnectionBuilder()
     .withUrl("/messages")
     .build();
 
+//When we use access toekn we neen to attach accesstoken here like below
+//No need to add anything when we use cookie authorization
+//We need to setup authentication and token options in startup.cs
+//var connection = new signalR.HubConnectionBuilder()
+//    .withUrl("/messages", {
+//        accessTokenFactory: () => "your access toekn here"
+//    })
+//    .build();
+
 connection.on("ReceiveMessage", function (message) {
     var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     var div = document.createElement("div");
@@ -42,11 +51,22 @@ document.getElementById("sendButton").addEventListener("click", function (event)
             return console.error(error.toString());
         });
     }
+    else if (groupValue === "PrivateGroup")
+        connection.invoke("SendMessageToGroup", "PrivateGroup", message).catch(function (error) {
+            return console.error(error.toString());
+        });
     else {
-        connection.invoke("SendMessageToUser", groupValue, message).catch(function (error) {
+        connection.invoke("SendMessageToUser", groupValue , message).catch(function (error) {
             return console.error(error.toString());
         });
     }
 
     event.preventDefault();
- });
+});
+
+document.getElementById("joinGroup").addEventListener("click", function (evevnt) {
+    connection.invoke("JoinGroup", "PrivateGroup").catch(function (error) {
+        return console.error(error.toString());
+    });
+    event.preventDefault();
+})

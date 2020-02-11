@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Threading.Tasks;
 
 namespace SignalRServer.Hubs
 {
+    //[Authorize]   //It needs when we use authorization. remaining configuration is in message.js, startup.cs
     public class MessageHub : Hub
     {
         public Task SendMessageToAll(string message)
@@ -39,7 +41,7 @@ namespace SignalRServer.Hubs
 
         public Task SendMessageToGroup(string group, string message)
         {
-            return Clients.Group(group).SendAsync(message);
+            return Clients.Group(group).SendAsync("ReceiveMessage", message);
         }
     }
 }

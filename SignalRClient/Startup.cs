@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SignalRServer.Hubs;
+using System.Threading.Tasks;
 
 namespace SignalRClient
 {
@@ -24,8 +20,38 @@ namespace SignalRClient
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            //When we use Bearer authorization the bloew configuration is require 
+            services.AddAuthentication()
+                .AddJwtBearer(options =>
+                {
+                    options.Events = new Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerEvents
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            var accessToken = context.Request.Query["access_token"];
+                            if (string.IsNullOrEmpty(accessToken) == false)
+                            {
+                                context.Token = accessToken;
+                            }
+                            return Task.CompletedTask;
+                        }
+                    };
+                });
+
+            services.AddControllers();
             services.AddRazorPages();
-            services.AddSignalR();
+
+
+            ////For Redis signaR 
+            //services.AddSignalR().AddRedis(options =>
+            //{
+            //    options.Configuration.ClientName = "SignalR";
+            //});
+
+
+            //For Azure SignalR
+            services.AddSignalR().AddAzureSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,10 +77,18 @@ namespace SignalRClient
             //app.UseSignalR(config => {
             //    config.MapHub<MessageHub>("/messages");
             //});
+
+
+            //This is only for Azure signalR service
+            app.UseAzureSignalR(config =>
+            {
+                config.MapHub<MessageHub>("/messages");
+            });
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllers();
                 endpoints.MapRazorPages();
-                endpoints.MapHub<MessageHub>("/messages");
+                //endpoints.MapHub<MessageHub>("/messages");   // Need for regular and Redis SignalR but not for Azure SignalR
             });
 
         }
